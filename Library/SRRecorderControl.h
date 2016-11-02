@@ -145,6 +145,9 @@ IB_DESIGNABLE
  */
 @property (nonatomic, copy) NSDictionary *objectValue;
 
+@property (strong) NSColor *backgroundColor;
+@property (strong) NSColor *borderColor;
+
 /*!
     Configures recording behavior of the control.
 
