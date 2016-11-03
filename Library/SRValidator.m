@@ -41,7 +41,7 @@
 
 #pragma mark Methods
 
-- (BOOL)isKeyCode:(unsigned short)aKeyCode andFlagsTaken:(NSEventModifierFlags)aFlags error:(NSError **)outError;
+- (BOOL)isKeyCode:(unsigned short)aKeyCode andFlagsTaken:(NSEventModifierFlags)aFlags error:(NSError **)outError outMenuItem:(NSMenuItem **)outMenuItem;
 {
     if ([self isKeyCode:aKeyCode andFlagTakenInDelegate:aFlags error:outError])
         return YES;
@@ -55,7 +55,7 @@
 
     if ((![self.delegate respondsToSelector:@selector(shortcutValidatorShouldCheckMenu:)] ||
          [self.delegate shortcutValidatorShouldCheckMenu:self]) &&
-        [self isKeyCode:aKeyCode andFlags:aFlags takenInMenu:[NSApp mainMenu] error:outError])
+        [self isKeyCode:aKeyCode andFlags:aFlags takenInMenu:[NSApp mainMenu] error:outError outMenuItem:outMenuItem])
     {
         return YES;
     }
@@ -114,22 +114,18 @@
     NSArray *symbolicHotKeys = (NSArray *)CFBridgingRelease(s);
     aFlags &= SRCocoaModifierFlagsMask;
 
-    for (NSDictionary *symbolicHotKey in symbolicHotKeys)
-    {
+    for (NSDictionary *symbolicHotKey in symbolicHotKeys) {
         if ((__bridge CFBooleanRef)symbolicHotKey[(__bridge NSString *)kHISymbolicHotKeyEnabled] != kCFBooleanTrue)
             continue;
 
         unsigned short symbolicHotKeyCode = [symbolicHotKey[(__bridge NSString *)kHISymbolicHotKeyCode] integerValue];
 
-        if (symbolicHotKeyCode == aKeyCode)
-        {
+        if (symbolicHotKeyCode == aKeyCode) {
             UInt32 symbolicHotKeyFlags = [symbolicHotKey[(__bridge NSString *)kHISymbolicHotKeyModifiers] unsignedIntValue];
             symbolicHotKeyFlags &= SRCarbonModifierFlagsMask;
 
-            if (SRCarbonToCocoaFlags(symbolicHotKeyFlags) == aFlags)
-            {
-                if (outError)
-                {
+            if (SRCarbonToCocoaFlags(symbolicHotKeyFlags) == aFlags) {
+                if (outError) {
                     BOOL isASCIIOnly = YES;
 
                     if ([self.delegate respondsToSelector:@selector(shortcutValidatorShouldUseASCIIStringForKeyCodes:)])
@@ -157,13 +153,11 @@
     return NO;
 }
 
-- (BOOL)isKeyCode:(unsigned short)aKeyCode andFlags:(NSEventModifierFlags)aFlags takenInMenu:(NSMenu *)aMenu error:(NSError **)outError
-{
+- (BOOL)isKeyCode:(unsigned short)aKeyCode andFlags:(NSEventModifierFlags)aFlags takenInMenu:(NSMenu *)aMenu error:(NSError **)outError outMenuItem:(NSMenuItem **)outMenuItem {
     aFlags &= SRCocoaModifierFlagsMask;
 
-    for (NSMenuItem *menuItem in [aMenu itemArray])
-    {
-        if (menuItem.hasSubmenu && [self isKeyCode:aKeyCode andFlags:aFlags takenInMenu:menuItem.submenu error:outError])
+    for (NSMenuItem *menuItem in [aMenu itemArray]) {
+        if (menuItem.hasSubmenu && [self isKeyCode:aKeyCode andFlags:aFlags takenInMenu:menuItem.submenu error:outError outMenuItem:outMenuItem])
             return YES;
 
         NSString *keyEquivalent = menuItem.keyEquivalent;
@@ -173,10 +167,12 @@
 
         NSEventModifierFlags keyEquivalentModifierMask = menuItem.keyEquivalentModifierMask;
 
-        if (SRKeyCodeWithFlagsEqualToKeyEquivalentWithFlags(aKeyCode, aFlags, keyEquivalent, keyEquivalentModifierMask))
-        {
-            if (outError)
-            {
+        if (SRKeyCodeWithFlagsEqualToKeyEquivalentWithFlags(aKeyCode, aFlags, keyEquivalent, keyEquivalentModifierMask)) {
+            if (outMenuItem) {
+                *outMenuItem = menuItem;
+            }
+            
+            if (outError) {
                 BOOL isASCIIOnly = YES;
 
                 if ([self.delegate respondsToSelector:@selector(shortcutValidatorShouldUseASCIIStringForKeyCodes:)])

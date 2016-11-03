@@ -38,7 +38,7 @@
 
     @see        SRValidatorDelegate
  */
-- (BOOL)isKeyCode:(unsigned short)aKeyCode andFlagsTaken:(NSEventModifierFlags)aFlags error:(NSError **)outError;
+- (BOOL)isKeyCode:(unsigned short)aKeyCode andFlagsTaken:(NSEventModifierFlags)aFlags error:(NSError **)outError outMenuItem:(NSMenuItem **)outMenuItem;
 
 /*!
     Determines whether shortcut is taken in delegate.
@@ -59,7 +59,7 @@
 
     @discussion Does not check whether delegate allows or disallows checking in application menu.
  */
-- (BOOL)isKeyCode:(unsigned short)aKeyCode andFlags:(NSEventModifierFlags)aFlags takenInMenu:(NSMenu *)aMenu error:(NSError **)outError;
+- (BOOL)isKeyCode:(unsigned short)aKeyCode andFlags:(NSEventModifierFlags)aFlags takenInMenu:(NSMenu *)aMenu error:(NSError **)outError outMenuItem:(NSMenuItem **)outMenuItem;
 
 @end
 
