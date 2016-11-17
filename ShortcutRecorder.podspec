@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.source = { :git => 'git://github.com/Kentzo/ShortcutRecorder.git', :branch => 'master' }
   s.author = { 'Ilya Kulakov' => 'kulakov.ilya@gmail.com' }
   s.frameworks = 'Carbon', 'Cocoa'
-  s.platform = :osx, "10.6"
+  s.platform = :osx, "10.9"
 
   s.subspec 'Core' do |core|
     core.source_files = 'Library/*.{h,m}'
