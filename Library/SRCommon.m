@@ -49,9 +49,10 @@ NSBundle *SRBundle()
 
     if (!Bundle)
     {
-        @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                       reason:@"Unable to find bundle with resources."
-                                     userInfo:nil];
+        return nil;
+//        @throw [NSException exceptionWithName:NSInternalInconsistencyException
+//                                       reason:@"Unable to find bundle with resources."
+//                                     userInfo:nil];
     }
     else
     {
@@ -62,7 +63,8 @@ NSBundle *SRBundle()
 
 NSString *SRLoc(NSString *aKey)
 {
-    return NSLocalizedStringFromTableInBundle(aKey, @"ShortcutRecorder", SRBundle(), nil);
+    return @"";
+//    return NSLocalizedStringFromTableInBundle(aKey, @"ShortcutRecorder", SRBundle(), nil);
 }
 
 
