@@ -148,6 +148,10 @@ IB_DESIGNABLE
 @property (strong) NSColor *backgroundColor;
 @property (strong) NSColor *borderColor;
 
+@property (strong) NSColor *normalLabelTextColor;
+@property (strong) NSColor *recordingLabelTextColor;
+@property (strong) NSColor *disabledLabelTextColor;
+
 /*!
     Configures recording behavior of the control.
 

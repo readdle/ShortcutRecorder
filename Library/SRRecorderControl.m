@@ -463,55 +463,49 @@ typedef NS_ENUM(NSUInteger, _SRRecorderControlButtonTag)
 
 - (NSDictionary *)normalLabelAttributes
 {
-    static dispatch_once_t OnceToken;
     static NSDictionary *NormalAttributes = nil;
-    dispatch_once(&OnceToken, ^{
-        NSMutableParagraphStyle *p = [[NSMutableParagraphStyle alloc] init];
-        p.alignment = NSCenterTextAlignment;
-        p.lineBreakMode = NSLineBreakByTruncatingTail;
-        p.baseWritingDirection = NSWritingDirectionLeftToRight;
-        NormalAttributes = @{
-            NSParagraphStyleAttributeName: [p copy],
-            NSFontAttributeName: [NSFont systemFontOfSize:13.0 weight:NSFontWeightMedium],
-            NSForegroundColorAttributeName: [NSColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:1.0]
-        };
-    });
+    NSMutableParagraphStyle *p = [[NSMutableParagraphStyle alloc] init];
+    p.alignment = NSCenterTextAlignment;
+    p.lineBreakMode = NSLineBreakByTruncatingTail;
+    p.baseWritingDirection = NSWritingDirectionLeftToRight;
+    NSColor *textColor = self.normalLabelTextColor ?: [NSColor controlTextColor];
+    NormalAttributes = @{
+                         NSParagraphStyleAttributeName: [p copy],
+                         NSFontAttributeName: [NSFont systemFontOfSize:13.0 weight:NSFontWeightMedium],
+                         NSForegroundColorAttributeName: textColor
+                         };
     return NormalAttributes;
 }
 
 - (NSDictionary *)recordingLabelAttributes
 {
-    static dispatch_once_t OnceToken;
     static NSDictionary *RecordingAttributes = nil;
-    dispatch_once(&OnceToken, ^{
-        NSMutableParagraphStyle *p = [[NSMutableParagraphStyle alloc] init];
-        p.alignment = NSCenterTextAlignment;
-        p.lineBreakMode = NSLineBreakByTruncatingTail;
-        p.baseWritingDirection = NSWritingDirectionLeftToRight;
-        RecordingAttributes = @{
-            NSParagraphStyleAttributeName: [p copy],
-            NSFontAttributeName: [NSFont systemFontOfSize:13.0 weight:NSFontWeightMedium],
-            NSForegroundColorAttributeName: [NSColor disabledControlTextColor]
-        };
-    });
+    NSMutableParagraphStyle *p = [[NSMutableParagraphStyle alloc] init];
+    p.alignment = NSCenterTextAlignment;
+    p.lineBreakMode = NSLineBreakByTruncatingTail;
+    p.baseWritingDirection = NSWritingDirectionLeftToRight;
+    NSColor *textColor = self.recordingLabelTextColor ?: [NSColor disabledControlTextColor];
+    RecordingAttributes = @{
+                            NSParagraphStyleAttributeName: [p copy],
+                            NSFontAttributeName: [NSFont systemFontOfSize:13.0 weight:NSFontWeightMedium],
+                            NSForegroundColorAttributeName: textColor
+                            };
     return RecordingAttributes;
 }
 
 - (NSDictionary *)disabledLabelAttributes
 {
-    static dispatch_once_t OnceToken;
     static NSDictionary *DisabledAttributes = nil;
-    dispatch_once(&OnceToken, ^{
-        NSMutableParagraphStyle *p = [[NSMutableParagraphStyle alloc] init];
-        p.alignment = NSCenterTextAlignment;
-        p.lineBreakMode = NSLineBreakByTruncatingTail;
-        p.baseWritingDirection = NSWritingDirectionLeftToRight;
-        DisabledAttributes = @{
-            NSParagraphStyleAttributeName: [p copy],
-            NSFontAttributeName: [NSFont systemFontOfSize:13.0 weight:NSFontWeightMedium],
-            NSForegroundColorAttributeName: [NSColor disabledControlTextColor]
-        };
-    });
+    NSMutableParagraphStyle *p = [[NSMutableParagraphStyle alloc] init];
+    p.alignment = NSCenterTextAlignment;
+    p.lineBreakMode = NSLineBreakByTruncatingTail;
+    p.baseWritingDirection = NSWritingDirectionLeftToRight;
+    NSColor *textColor = self.disabledLabelTextColor ?:  [NSColor disabledControlTextColor];
+    DisabledAttributes = @{
+                           NSParagraphStyleAttributeName: [p copy],
+                           NSFontAttributeName: [NSFont systemFontOfSize:13.0 weight:NSFontWeightMedium],
+                           NSForegroundColorAttributeName: textColor
+                           };
     return DisabledAttributes;
 }
 
